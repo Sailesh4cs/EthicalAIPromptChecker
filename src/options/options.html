@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LLM Policy Guardian - Settings</title>
+  <link rel="stylesheet" href="options.css">
+</head>
+<body>
+  <div class="options-container">
+    <header class="options-header">
+      <div class="logo-container">
+        <div class="logo"></div>
+        <h1>LLM Policy Guardian Settings</h1>
+      </div>
+    </header>
+    
+    <main class="options-content">
+      <section class="options-section">
+        <h2>General Settings</h2>
+        <div class="option-item">
+          <div class="option-info">
+            <span class="option-name">Enable Extension</span>
+            <span class="option-description">Turn the extension on or off</span>
+          </div>
+          <label class="toggle">
+            <input type="checkbox" id="enableExtension" checked>
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+        
+        <div class="option-item">
+          <div class="option-info">
+            <span class="option-name">Action Mode</span>
+            <span class="option-description">What to do when violations are detected</span>
+          </div>
+          <div class="select-container">
+            <select id="blockMode" class="select-input">
+              <option value="warn">Warn Only</option>
+              <option value="block">Block Violations</option>
+            </select>
+          </div>
+        </div>
+      </section>
+      
+      <section class="options-section">
+        <h2>Policy Rules</h2>
+        <p class="section-description">Configure which policy rules to enforce and their severity levels</p>
+        
+        <div class="rule-config" id="sensitiveDataRule">
+          <div class="rule-header">
+            <div class="rule-title-row">
+              <h3 class="rule-title">Sensitive Data Protection</h3>
+              <label class="toggle toggle-small">
+                <input type="checkbox" data-rule="sensitiveData" class="rule-toggle" checked>
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+            <p class="rule-description">Detects and prevents sharing of sensitive information like PII, credentials, and API keys</p>
+          </div>
+          
+          <div class="rule-settings">
+            <div class="rule-setting-item">
+              <span class="setting-label">Severity Level</span>
+              <div class="select-container">
+                <select data-rule="sensitiveData" data-setting="severity" class="rule-setting-select">
+                  <option value="low">Low</option>
+                  <option value="medium">Medium</option>
+                  <option value="high" selected>High</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="rule-config" id="proprietaryInfoRule">
+          <div class="rule-header">
+            <div class="rule-title-row">
+              <h3 class="rule-title">Proprietary Information</h3>
+              <label class="toggle toggle-small">
+                <input type="checkbox" data-rule="proprietaryInfo" class="rule-toggle" checked>
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+            <p class="rule-description">Prevents sharing of company confidential information and trade secrets</p>
+          </div>
+          
+          <div class="rule-settings">
+            <div class="rule-setting-item">
+              <span class="setting-label">Severity Level</span>
+              <div class="select-container">
+                <select data-rule="proprietaryInfo" data-setting="severity" class="rule-setting-select">
+                  <option value="low">Low</option>
+                  <option value="medium">Medium</option>
+                  <option value="high" selected>High</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="rule-config" id="promptInjectionRule">
+          <div class="rule-header">
+            <div class="rule-title-row">
+              <h3 class="rule-title">Prompt Injection Prevention</h3>
+              <label class="toggle toggle-small">
+                <input type="checkbox" data-rule="promptInjection" class="rule-toggle" checked>
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+            <p class="rule-description">Detects and blocks attempts to manipulate LLM behavior through prompt engineering</p>
+          </div>
+          
+          <div class="rule-settings">
+            <div class="rule-setting-item">
+              <span class="setting-label">Severity Level</span>
+              <div class="select-container">
+                <select data-rule="promptInjection" data-setting="severity" class="rule-setting-select">
+                  <option value="low">Low</option>
+                  <option value="medium">Medium</option>
+                  <option value="high" selected>High</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="rule-config" id="ethicalConcernsRule">
+          <div class="rule-header">
+            <div class="rule-title-row">
+              <h3 class="rule-title">Ethical Guidelines</h3>
+              <label class="toggle toggle-small">
+                <input type="checkbox" data-rule="ethicalConcerns" class="rule-toggle" checked>
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+            <p class="rule-description">Enforces company ethical guidelines for AI interaction</p>
+          </div>
+          
+          <div class="rule-settings">
+            <div class="rule-setting-item">
+              <span class="setting-label">Severity Level</span>
+              <div class="select-container">
+                <select data-rule="ethicalConcerns" data-setting="severity" class="rule-setting-select">
+                  <option value="low">Low</option>
+                  <option value="medium" selected>Medium</option>
+                  <option value="high">High</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      
+      <section class="options-section">
+        <h2>Logging & Reporting</h2>
+        <div class="option-item">
+          <div class="option-info">
+            <span class="option-name">Enable Logging</span>
+            <span class="option-description">Keep records of policy violations</span>
+          </div>
+          <label class="toggle">
+            <input type="checkbox" id="enableLogging" checked>
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+        
+        <div class="option-item">
+          <div class="option-info">
+            <span class="option-name">Log Retention Period</span>
+            <span class="option-description">How long to keep violation logs</span>
+          </div>
+          <div class="select-container">
+            <select id="retentionPeriod" class="select-input">
+              <option value="7">7 days</option>
+              <option value="14">14 days</option>
+              <option value="30" selected>30 days</option>
+              <option value="90">90 days</option>
+            </select>
+          </div>
+        </div>
+      </section>
+      
+      <section class="options-section">
+        <h2>Import/Export</h2>
+        <div class="button-group">
+          <button id="exportBtn" class="button button-primary">Export Settings</button>
+          <button id="importBtn" class="button button-secondary">Import Settings</button>
+          <input type="file" id="importInput" style="display: none" accept=".json">
+        </div>
+      </section>
+    </main>
+    
+    <footer class="options-footer">
+      <div class="button-group">
+        <button id="saveBtn" class="button button-primary">Save Changes</button>
+        <button id="resetBtn" class="button button-secondary">Reset to Default</button>
+      </div>
+      <div class="footer-text">
+        <p>LLM Policy Guardian v1.0.0</p>
+      </div>
+    </footer>
+    
+    <div id="toast" class="toast">Settings saved successfully</div>
+  </div>
+  
+  <script src="options.js" type="module"></script>
+</body>
+</html>

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LLM Policy Guardian</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="popup-container">
+    <header class="popup-header">
+      <div class="logo-container">
+        <div class="logo"></div>
+        <h1>LLM Policy Guardian</h1>
+      </div>
+      <div class="toggle-container">
+        <label class="toggle">
+          <input type="checkbox" id="extensionToggle" checked>
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+    </header>
+    
+    <main class="popup-content">
+      <div class="status-section">
+        <div class="status" id="statusIndicator">
+          <span class="status-icon active"></span>
+          <span class="status-text">Active</span>
+        </div>
+        <div class="stats">
+          <div class="stat">
+            <span class="stat-number" id="promptsChecked">0</span>
+            <span class="stat-label">Prompts Checked</span>
+          </div>
+          <div class="stat">
+            <span class="stat-number" id="violationsFound">0</span>
+            <span class="stat-label">Violations</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="rules-section">
+        <h2>Active Policies</h2>
+        <ul class="rules-list">
+          <li class="rule-item">
+            <div class="rule-info">
+              <span class="rule-name">Sensitive Data</span>
+              <span class="rule-severity high">High</span>
+            </div>
+            <label class="toggle toggle-small">
+              <input type="checkbox" class="rule-toggle" data-rule="sensitiveData" checked>
+              <span class="toggle-slider"></span>
+            </label>
+          </li>
+          <li class="rule-item">
+            <div class="rule-info">
+              <span class="rule-name">Proprietary Information</span>
+              <span class="rule-severity high">High</span>
+            </div>
+            <label class="toggle toggle-small">
+              <input type="checkbox" class="rule-toggle" data-rule="proprietaryInfo" checked>
+              <span class="toggle-slider"></span>
+            </label>
+          </li>
+          <li class="rule-item">
+            <div class="rule-info">
+              <span class="rule-name">Prompt Injection</span>
+              <span class="rule-severity high">High</span>
+            </div>
+            <label class="toggle toggle-small">
+              <input type="checkbox" class="rule-toggle" data-rule="promptInjection" checked>
+              <span class="toggle-slider"></span>
+            </label>
+          </li>
+          <li class="rule-item">
+            <div class="rule-info">
+              <span class="rule-name">Ethical Concerns</span>
+              <span class="rule-severity medium">Medium</span>
+            </div>
+            <label class="toggle toggle-small">
+              <input type="checkbox" class="rule-toggle" data-rule="ethicalConcerns" checked>
+              <span class="toggle-slider"></span>
+            </label>
+          </li>
+        </ul>
+      </div>
+      
+      <div class="recent-section">
+        <h2>Recent Activity</h2>
+        <div class="recent-activity" id="recentActivity">
+          <div class="empty-state">
+            <p>No recent activity to display</p>
+          </div>
+        </div>
+      </div>
+    </main>
+    
+    <footer class="popup-footer">
+      <a href="#" id="settingsBtn" class="footer-link">Settings</a>
+      <a href="#" id="reportBtn" class="footer-link">Report</a>
+      <a href="#" id="helpBtn" class="footer-link">Help</a>
+    </footer>
+  </div>
+  
+  <script src="popup.js" type="module"></script>
+</body>
+</html>

@@ -1,0 +1,142 @@
+/* Content script styling */
+.llm-policy-guardian-banner {
+  position: fixed;
+  top: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10000;
+  width: 90%;
+  max-width: 500px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+  animation: llm-policy-guardian-slide-in 0.3s ease;
+  border: 1px solid #e2e8f0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
+    Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.llm-policy-guardian-banner-warn {
+  border-top: 4px solid #FFC107;
+}
+
+.llm-policy-guardian-banner-block {
+  border-top: 4px solid #DC2626;
+}
+
+.llm-policy-guardian-banner-content {
+  padding: 16px;
+}
+
+.llm-policy-guardian-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.llm-policy-guardian-icon {
+  margin-right: 8px;
+  font-size: 20px;
+}
+
+.llm-policy-guardian-header h2 {
+  flex: 1;
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.llm-policy-guardian-close {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: #64748b;
+  padding: 4px 8px;
+  border-radius: 4px;
+  margin-left: 8px;
+}
+
+.llm-policy-guardian-close:hover {
+  background-color: #f1f5f9;
+}
+
+.llm-policy-guardian-body {
+  color: #374151;
+  font-size: 14px;
+  margin-bottom: 16px;
+}
+
+.llm-policy-guardian-body p {
+  margin: 0 0 8px 0;
+}
+
+.llm-policy-guardian-violations {
+  margin: 8px 0;
+  padding: 0 0 0 20px;
+  list-style-type: disc;
+}
+
+.llm-policy-guardian-violations li {
+  margin-bottom: 4px;
+}
+
+.llm-policy-guardian-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.llm-policy-guardian-btn {
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.1s;
+  border: none;
+}
+
+.llm-policy-guardian-btn:active {
+  transform: translateY(1px);
+}
+
+.llm-policy-guardian-btn-edit {
+  background-color: #f1f5f9;
+  color: #0F52BA;
+}
+
+.llm-policy-guardian-btn-edit:hover {
+  background-color: #e2e8f0;
+}
+
+.llm-policy-guardian-btn-proceed {
+  background-color: #0F52BA;
+  color: white;
+}
+
+.llm-policy-guardian-btn-proceed:hover {
+  background-color: #0A419A;
+}
+
+@keyframes llm-policy-guardian-slide-in {
+  from {
+    transform: translateX(-50%) translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes llm-policy-guardian-fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}

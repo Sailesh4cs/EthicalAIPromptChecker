@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LLM Policy Guardian - Help</title>
+  <link rel="stylesheet" href="help.css">
+</head>
+<body>
+  <div class="help-container">
+    <header class="help-header">
+      <div class="logo-container">
+        <div class="logo"></div>
+        <h1>LLM Policy Guardian Help</h1>
+      </div>
+    </header>
+    
+    <main class="help-content">
+      <section class="help-section">
+        <h2>Getting Started</h2>
+        <p>LLM Policy Guardian helps ensure that prompts sent to AI language models comply with your company's ethical and usage policies. It monitors interactions with major LLM platforms and provides warnings or blocks potentially problematic prompts.</p>
+        
+        <h3>Supported Platforms</h3>
+        <ul>
+          <li>ChatGPT (chat.openai.com)</li>
+          <li>Microsoft Copilot (copilot.microsoft.com)</li>
+          <li>Anthropic Claude (claude.ai)</li>
+          <li>GitHub Copilot (github.com)</li>
+        </ul>
+      </section>
+      
+      <section class="help-section">
+        <h2>How It Works</h2>
+        <p>When you submit a prompt to an LLM, the extension:</p>
+        <ol>
+          <li>Intercepts the prompt before it's sent</li>
+          <li>Checks it against your configured policy rules</li>
+          <li>Either allows the prompt, displays a warning, or blocks the submission based on your settings</li>
+        </ol>
+        
+        <div class="info-box">
+          <h3>Key Features</h3>
+          <ul>
+            <li><strong>Real-time Policy Checking:</strong> Ensures compliance with company policies before prompts are sent</li>
+            <li><strong>Customizable Rules:</strong> Configure which policies to enforce and their severity levels</li>
+            <li><strong>Detailed Logging:</strong> Keep records of policy violations for compliance and auditing</li>
+            <li><strong>User-friendly Warnings:</strong> Provides clear explanations when policies are violated</li>
+          </ul>
+        </div>
+      </section>
+      
+      <section class="help-section">
+        <h2>Policy Rules</h2>
+        <p>The extension includes several pre-configured policy rules:</p>
+        
+        <div class="rule-item">
+          <h3>Sensitive Data Protection</h3>
+          <p>Detects and prevents sharing of personal identifiable information (PII), credentials, and API keys. This includes:</p>
+          <ul>
+            <li>Email addresses</li>
+            <li>Credit card numbers</li>
+            <li>Social Security Numbers</li>
+            <li>API keys and passwords</li>
+            <li>Phone numbers</li>
+            <li>IP addresses</li>
+          </ul>
+        </div>
+        
+        <div class="rule-item">
+          <h3>Proprietary Information</h3>
+          <p>Prevents sharing of company confidential information and trade secrets, including:</p>
+          <ul>
+            <li>Content marked as confidential or internal</li>
+            <li>Trade secrets</li>
+            <li>Internal code or systems</li>
+            <li>Revenue or sales data</li>
+            <li>Customer information</li>
+          </ul>
+        </div>
+        
+        <div class="rule-item">
+          <h3>Prompt Injection Prevention</h3>
+          <p>Detects attempts to manipulate LLM behavior through prompt engineering:</p>
+          <ul>
+            <li>Instructions to ignore previous constraints</li>
+            <li>System prompt manipulation</li>
+            <li>Role-playing to bypass restrictions</li>
+            <li>Jailbreak attempts</li>
+          </ul>
+        </div>
+        
+        <div class="rule-item">
+          <h3>Ethical Guidelines</h3>
+          <p>Enforces company ethical guidelines for AI interaction:</p>
+          <ul>
+            <li>Prevents requests for harmful content</li>
+            <li>Blocks illegal activity instructions</li>
+            <li>Identifies discriminatory content</li>
+            <li>Detects misinformation requests</li>
+            <li>Blocks harassment or privacy violations</li>
+          </ul>
+        </div>
+      </section>
+      
+      <section class="help-section">
+        <h2>Configuring the Extension</h2>
+        <p>You can configure the extension through the Options page:</p>
+        
+        <h3>General Settings</h3>
+        <ul>
+          <li><strong>Enable Extension:</strong> Turn the extension on or off entirely</li>
+          <li><strong>Action Mode:</strong> Choose between "Warn Only" (allows override) or "Block Violations" (prevents submission)</li>
+        </ul>
+        
+        <h3>Policy Rules</h3>
+        <ul>
+          <li><strong>Rule Toggles:</strong> Enable or disable specific policy rules</li>
+          <li><strong>Severity Levels:</strong> Set each rule's severity (Low, Medium, High)</li>
+        </ul>
+        
+        <h3>Logging & Reporting</h3>
+        <ul>
+          <li><strong>Enable Logging:</strong> Keep records of policy violations</li>
+          <li><strong>Log Retention Period:</strong> How long to keep violation logs</li>
+        </ul>
+      </section>
+      
+      <section class="help-section">
+        <h2>Frequently Asked Questions</h2>
+        
+        <div class="faq-item">
+          <h3>Will this extension send my prompts to a third party?</h3>
+          <p>No. All policy checking happens locally in your browser. Your prompts are never sent to any external servers.</p>
+        </div>
+        
+        <div class="faq-item">
+          <h3>What happens when a policy violation is detected?</h3>
+          <p>Depending on your settings, you'll either see a warning (which you can override) or the prompt will be blocked from submission.</p>
+        </div>
+        
+        <div class="faq-item">
+          <h3>Can I customize the policy rules?</h3>
+          <p>The current version allows you to enable/disable rules and set their severity. Future versions will allow more customization of the specific patterns detected.</p>
+        </div>
+        
+        <div class="faq-item">
+          <h3>Where can I view violation logs?</h3>
+          <p>Recent violations appear in the popup. For a full report, click the "Report" link in the popup footer.</p>
+        </div>
+        
+        <div class="faq-item">
+          <h3>How do I export my settings?</h3>
+          <p>Go to the Options page and click the "Export Settings" button. This will download a JSON file with your current configuration.</p>
+        </div>
+      </section>
+    </main>
+    
+    <footer class="help-footer">
+      <p>LLM Policy Guardian v1.0.0</p>
+      <a href="#" id="backBtn" class="back-button">Back to Settings</a>
+    </footer>
+  </div>
+  
+  <script>
+    // Back button functionality
+    document.getElementById('backBtn').addEventListener('click', () => {
+      window.history.back();
+    });
+  </script>
+</body>
+</html>

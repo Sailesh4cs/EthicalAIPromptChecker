@@ -1,0 +1,49 @@
+{
+  "manifest_version": 3,
+  "name": "LLM Policy Guardian",
+  "version": "1.0.0",
+  "description": "Checks if prompts submitted to LLMs violate company ethical or AI usage policies",
+  "icons": {
+    "16": "src/assets/icon-16.png",
+    "48": "src/assets/icon-48.png",
+    "128": "src/assets/icon-128.png"
+  },
+  "action": {
+    "default_popup": "src/popup/popup.html",
+    "default_icon": {
+      "16": "src/assets/icon-16.png",
+      "48": "src/assets/icon-48.png",
+      "128": "src/assets/icon-128.png"
+    }
+  },
+  "options_page": "src/options/options.html",
+  "background": {
+    "service_worker": "src/background/background.js",
+    "type": "module"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://chat.openai.com/*",
+        "https://chatgpt.com/",
+        "https://copilot.microsoft.com/*",
+        "https://*.anthropic.com/*",
+        "https://github.com/*"
+      ],
+      "js": ["src/content/content.js"],
+      "css": ["src/content/content.css"],
+      "type": "module"
+    }
+  ],
+  "permissions": [
+    "storage",
+    "webRequest"
+  ],
+  "host_permissions": [
+    "https://chat.openai.com/*",
+    "https://chatgpt.com/",
+    "https://copilot.microsoft.com/*",
+    "https://*.anthropic.com/*",
+    "https://github.com/*"
+  ]
+}

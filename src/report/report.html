@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LLM Policy Guardian - Violation Report</title>
+  <link rel="stylesheet" href="report.css">
+</head>
+<body>
+  <div class="report-container">
+    <header class="report-header">
+      <div class="logo-container">
+        <div class="logo"></div>
+        <h1>Policy Violation Report</h1>
+      </div>
+      <div class="header-actions">
+        <button id="exportReportBtn" class="button button-primary">Export Report</button>
+        <button id="clearLogsBtn" class="button button-secondary">Clear Logs</button>
+      </div>
+    </header>
+    
+    <main class="report-content">
+      <section class="report-section">
+        <div class="report-summary">
+          <div class="summary-item">
+            <span class="summary-label">Total Checks</span>
+            <span class="summary-value" id="totalChecks">0</span>
+          </div>
+          <div class="summary-item">
+            <span class="summary-label">Warnings</span>
+            <span class="summary-value" id="totalWarnings">0</span>
+          </div>
+          <div class="summary-item">
+            <span class="summary-label">Blocks</span>
+            <span class="summary-value" id="totalBlocks">0</span>
+          </div>
+          <div class="summary-item">
+            <span class="summary-label">Overrides</span>
+            <span class="summary-value" id="totalOverrides">0</span>
+          </div>
+        </div>
+        
+        <div class="filter-controls">
+          <div class="filter-group">
+            <label for="dateRangeFilter" class="filter-label">Date Range:</label>
+            <select id="dateRangeFilter" class="filter-select">
+              <option value="all">All Time</option>
+              <option value="today">Today</option>
+              <option value="week">Last 7 Days</option>
+              <option value="month">Last 30 Days</option>
+            </select>
+          </div>
+          
+          <div class="filter-group">
+            <label for="actionFilter" class="filter-label">Action Type:</label>
+            <select id="actionFilter" class="filter-select">
+              <option value="all">All Actions</option>
+              <option value="warn">Warnings</option>
+              <option value="block">Blocks</option>
+              <option value="override">Overrides</option>
+            </select>
+          </div>
+          
+          <div class="filter-group">
+            <label for="platformFilter" class="filter-label">Platform:</label>
+            <select id="platformFilter" class="filter-select">
+              <option value="all">All Platforms</option>
+              <option value="chatgpt">ChatGPT</option>
+              <option value="copilot">Microsoft Copilot</option>
+              <option value="claude">Claude</option>
+              <option value="github-copilot">GitHub Copilot</option>
+            </select>
+          </div>
+        </div>
+      </section>
+      
+      <section class="report-section">
+        <div class="violations-table-container">
+          <table class="violations-table">
+            <thead>
+              <tr>
+                <th>Time</th>
+                <th>Action</th>
+                <th>Platform</th>
+                <th>Violations</th>
+                <th>Rules</th>
+              </tr>
+            </thead>
+            <tbody id="violationsTableBody">
+              <!-- Table rows will be added here dynamically -->
+            </tbody>
+          </table>
+        </div>
+        
+        <div class="empty-state" id="emptyState">
+          <p>No violation logs found</p>
+        </div>
+        
+        <div class="pagination">
+          <button id="prevPageBtn" class="pagination-button" disabled>Previous</button>
+          <span class="pagination-info" id="paginationInfo">Page 1 of 1</span>
+          <button id="nextPageBtn" class="pagination-button" disabled>Next</button>
+        </div>
+      </section>
+      
+      <section class="report-section">
+        <h2>Violation Breakdown by Rule</h2>
+        <div class="chart-container">
+          <div class="chart-placeholder" id="rulesChart">
+            <div class="rule-bar-chart">
+              <!-- Rule bars will be added here dynamically -->
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+    
+    <footer class="report-footer">
+      <p>LLM Policy Guardian v1.0.0</p>
+      <a href="#" id="backBtn" class="back-button">Back to Extension</a>
+    </footer>
+  </div>
+  
+  <script src="report.js" type="module"></script>
+</body>
+</html>
