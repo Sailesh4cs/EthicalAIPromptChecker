@@ -31,8 +31,7 @@
         "https://github.com/*"
       ],
       "js": ["src/content/content.js"],
-      "css": ["src/content/content.css"],
-      "type": "module"
+      "css": ["src/content/content.css"]
     }
   ],
   "permissions": [

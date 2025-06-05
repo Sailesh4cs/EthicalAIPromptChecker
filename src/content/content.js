@@ -1,5 +1,44 @@
 // Content script for intercepting LLM prompts
-import { throttle } from '../utils/helpers.js';
+
+// Helper functions
+function throttle(func, wait) {
+  let lastCall = 0;
+  let lastResult;
+  
+  return function(...args) {
+    const now = Date.now();
+    if (now - lastCall < wait) {
+      return lastResult;
+    }
+    lastCall = now;
+    lastResult = func.apply(this, args);
+    return lastResult;
+  };
+}
+
+// Sensitive data patterns
+const sensitiveDataPatterns = [
+  {
+    name: 'Email address',
+    type: 'regex',
+    pattern: '\\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}\\b'
+  },
+  {
+    name: 'Credit card number',
+    type: 'regex',
+    pattern: '\\b(?:4[0-9]{12}(?:[0-9]{3})?|5[1-5][0-9]{14}|3[47][0-9]{13}|3(?:0[0-5]|[68][0-9])[0-9]{11}|6(?:011|5[0-9]{2})[0-9]{12}|(?:2131|1800|35\\d{3})\\d{11})\\b'
+  },
+  {
+    name: 'Social Security Number',
+    type: 'regex',
+    pattern: '\\b(?!000|666|9\\d{2})\\d{3}-(?!00)\\d{2}-(?!0000)\\d{4}\\b'
+  },
+  {
+    name: 'API key',
+    type: 'regex',
+    pattern: '\\b(?:api[_-]?key|apikey|access[_-]?key|auth[_-]?token)[\\s:=]+[\'"`]?([\\w]{16,})[\'"`]?'
+  }
+];
 
 // Track which platform we're on
 let currentPlatform = detectPlatform();
@@ -9,8 +48,9 @@ let promptSubmitHandlers = {};
 
 // Initialize content script
 function initialize() {
-  alert("background");
-
+  // Debug log
+  console.log('LLM Policy Guardian: Initializing content script');
+  
   // Detect which LLM platform we're on
   currentPlatform = detectPlatform();
   
@@ -31,8 +71,9 @@ function initialize() {
 // Detect which LLM platform we're on based on URL
 function detectPlatform() {
   const url = window.location.href;
+  console.log('LLM Policy Guardian: Checking URL:', url);
   
-  if (url.includes('chat.openai.com') || url.includes('chatgpt.com')) {
+  if (url.includes('chat.openai.com')) {
     return 'chatgpt';
   } else if (url.includes('copilot.microsoft.com')) {
     return 'copilot';
@@ -77,6 +118,8 @@ function setupInterceptors() {
 // ChatGPT interceptor
 function setupChatGptInterceptor() {
   const chatGptHandler = throttle(async (event) => {
+    console.log('LLM Policy Guardian: Intercepting ChatGPT submission');
+    
     // Only intercept if the button is a submit button
     if (!event.target.form || !event.target.closest('button[type="submit"]')) {
       return;
@@ -84,27 +127,26 @@ function setupChatGptInterceptor() {
     
     const textareaElement = event.target.form.querySelector('textarea');
     if (!textareaElement) {
+      console.log('LLM Policy Guardian: No textarea found');
       return;
     }
     
     const promptText = textareaElement.value;
     if (!promptText || promptText.trim() === '') {
+      console.log('LLM Policy Guardian: Empty prompt');
       return;
     }
     
-    // Check the prompt against policies
-    const result = await checkPromptPolicy(promptText);
+    console.log('LLM Policy Guardian: Checking prompt:', promptText);
     
-    if (!result.allowed && result.action !== 'allow') {
+    // Check for sensitive data
+    const violations = checkSensitiveData(promptText);
+    console.log('LLM Policy Guardian: Violations found:', violations);
+    
+    if (violations.length > 0) {
       event.preventDefault();
       event.stopPropagation();
-      
-      if (result.action === 'block') {
-        showWarningBanner('Prompt blocked', result.violations, 'block');
-      } else {
-        showWarningBanner('Potential policy violation', result.violations, 'warn');
-      }
-      
+      showWarningBanner('Potential policy violation', violations, 'warn');
       return false;
     }
   }, 300);
@@ -118,120 +160,21 @@ function setupChatGptInterceptor() {
   };
 }
 
-// Microsoft Copilot interceptor
-function setupCopilotInterceptor() {
-  const copilotHandler = throttle(async (event) => {
-    // Find the nearest button that's being clicked
-    const button = event.target.closest('button');
-    if (!button) {
-      return;
-    }
-    
-    // Find the text input field
-    const textareaElement = document.querySelector('textarea[placeholder*="message"], textarea[placeholder*="Ask"], textarea[placeholder*="Copilot"]');
-    if (!textareaElement) {
-      return;
-    }
-    
-    const promptText = textareaElement.value;
-    if (!promptText || promptText.trim() === '') {
-      return;
-    }
-    
-    // Check the prompt against policies
-    const result = await checkPromptPolicy(promptText);
-    
-    if (!result.allowed && result.action !== 'allow') {
-      event.preventDefault();
-      event.stopPropagation();
-      
-      if (result.action === 'block') {
-        showWarningBanner('Prompt blocked', result.violations, 'block');
-      } else {
-        showWarningBanner('Potential policy violation', result.violations, 'warn');
-      }
-      
-      return false;
-    }
-  }, 300);
+// Check for sensitive data in prompt
+function checkSensitiveData(prompt) {
+  const violations = [];
+  const promptLower = prompt.toLowerCase();
   
-  // Add event listener to intercept clicks
-  document.addEventListener('click', copilotHandler, true);
+  sensitiveDataPatterns.forEach(pattern => {
+    if (new RegExp(pattern.pattern, 'i').test(promptLower)) {
+      violations.push({
+        rule: pattern.name,
+        description: `Found potential ${pattern.name.toLowerCase()}`
+      });
+    }
+  });
   
-  // Return cleanup function
-  return () => {
-    document.removeEventListener('click', copilotHandler, true);
-  };
-}
-
-// Claude interceptor
-function setupClaudeInterceptor() {
-  const claudeHandler = throttle(async (event) => {
-    // Only intercept if the target is a submit button
-    if (!event.target.closest('button[type="submit"]')) {
-      return;
-    }
-    
-    // Find the text input field
-    const textareaElement = document.querySelector('div[contenteditable="true"]');
-    if (!textareaElement) {
-      return;
-    }
-    
-    const promptText = textareaElement.textContent;
-    if (!promptText || promptText.trim() === '') {
-      return;
-    }
-    
-    // Check the prompt against policies
-    const result = await checkPromptPolicy(promptText);
-    
-    if (!result.allowed && result.action !== 'allow') {
-      event.preventDefault();
-      event.stopPropagation();
-      
-      if (result.action === 'block') {
-        showWarningBanner('Prompt blocked', result.violations, 'block');
-      } else {
-        showWarningBanner('Potential policy violation', result.violations, 'warn');
-      }
-      
-      return false;
-    }
-  }, 300);
-  
-  // Add event listener to intercept clicks
-  document.addEventListener('click', claudeHandler, true);
-  
-  // Return cleanup function
-  return () => {
-    document.removeEventListener('click', claudeHandler, true);
-  };
-}
-
-// GitHub Copilot interceptor
-function setupGithubCopilotInterceptor() {
-  // GitHub Copilot is more complex as it doesn't have a simple text area
-  // This is a placeholder for a more complex implementation
-  return () => {
-    // Cleanup function (empty for now)
-  };
-}
-
-// Check prompt against policy
-async function checkPromptPolicy(prompt) {
-  try {
-    const response = await chrome.runtime.sendMessage({
-      type: 'CHECK_PROMPT',
-      prompt: prompt
-    });
-    
-    return response;
-  } catch (error) {
-    console.error('Error checking prompt policy:', error);
-    // Fail open if there's an error
-    return { allowed: true, error: error.message };
-  }
+  return violations;
 }
 
 // Create warning banner UI
@@ -325,29 +268,12 @@ function showWarningBanner(title, violations, type) {
     proceedBtn.addEventListener('click', () => {
       hideWarningBanner();
       // Log this as a policy override
-      chrome.runtime.sendMessage({
-        type: 'LOG_VIOLATION',
-        data: {
-          action: 'override',
-          violations: violations,
-          platform: currentPlatform
-        }
-      });
+      console.log('LLM Policy Guardian: Policy override', violations);
     });
   }
   
   // Show the banner
   warningBanner.style.display = 'block';
-  
-  // Log this violation
-  chrome.runtime.sendMessage({
-    type: 'LOG_VIOLATION',
-    data: {
-      action: type,
-      violations: violations,
-      platform: currentPlatform
-    }
-  });
 }
 
 // Hide warning banner
@@ -356,17 +282,6 @@ function hideWarningBanner() {
     warningBanner.style.display = 'none';
   }
 }
-
-// Listen for messages from the background script
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-  alert(message.type + " message.type");
-
-  if (message.type === 'SETTINGS_UPDATED') {
-    // Re-initialize if settings change
-    initialize();
-    sendResponse({ success: true });
-  }
-});
 
 // Initialize the content script
 initialize();

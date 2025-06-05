@@ -5,7 +5,7 @@ import { getSettings } from '../utils/settings.js';
 // Initialize settings when extension is installed or updated
 chrome.runtime.onInstalled.addListener(async () => {
   const settings = await getSettings();
-  alert("background");
+ console.log("Background script initialized");
   if (!settings) {
     // Set default settings if none exist
     chrome.storage.sync.set({
